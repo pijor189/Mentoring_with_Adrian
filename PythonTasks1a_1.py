@@ -272,7 +272,49 @@ print()
 """
 def rysuj_spirale_liczb(n = 3):
     # TODO!
-    pass
+    wszystkie_liczby = n * n
+    liczby = [x for x in range(1, wszystkie_liczby)]
+
 
 rysuj_spirale_liczb()
 print()
+
+"""
+14.	Napisz funkcję, która na wejściu przyjmie dowolny tekst i wyświetlając go otoczy go gwizdkami. Przykładowo dla tekst=”Hello World”
+***********
+*Hello World*
+***********
+"""
+def otocz_tekst_gwiazdkami(tekst):
+    if type(tekst) is list:
+        rozmiar = len(tekst)
+        for i in range(rozmiar):
+            if i == 0:
+                gwiazdki = len(tekst)
+            else:
+                if gwiazdki < len(tekst[i]):
+                    gwiazdki = len(tekst[i])
+
+        gwiazdki += 5
+        for i in range(rozmiar + 2):
+            if i == 0 or i == rozmiar + 2 - 1:
+                print('*' * gwiazdki)
+            else:
+                roznica = gwiazdki - len(tekst[i - 1]) - 5
+                print('*', tekst[i - 1], ' ' * roznica, '*', sep=' ')
+    elif type(tekst) is str:
+        gwiazdki = len(tekst) + 4
+        for i in range(3):
+            if i != 1:
+                print('*' * gwiazdki)
+            else:
+                print('*', tekst, '*', sep=' ')
+    else:
+        print("Podany argument nie jest napisem ani lista")
+
+
+tekst = "Hello World"
+otocz_tekst_gwiazdkami(tekst)
+tekst = ["Hello World",
+         "Dzisiaj robimy zadania z mentoringu"]
+otocz_tekst_gwiazdkami(tekst)
