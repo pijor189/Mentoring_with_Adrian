@@ -270,13 +270,81 @@ print()
 8 9 4
 7 6 5
 """
-def rysuj_spirale_liczb(n = 3):
-    # TODO!
-    wszystkie_liczby = n * n
-    liczby = [x for x in range(1, wszystkie_liczby)]
+def rysuj_spirale_liczb(n = 4):
+    ilosc_liczb = n * n
+    liczby = [[0] * n for x in range(n)]
+    liczba = 1
+    start = 0
+    koniec = n - 1
+    pierwszy_krok = True
+    while ilosc_liczb:
+        gora = start
+        dol = koniec
+        prawo = koniec
+        lewo = start
+
+        if n % 2 == 0:
+            pierwszy_krok = True
+        else:
+            lewo -= 1
+
+        # w prawo
+        while lewo != prawo:
+            if pierwszy_krok and n % 2 == 0:
+                lewo = start
+                pierwszy_krok = False
+            elif pierwszy_krok and n % 2 != 0:
+                lewo = start
+                pierwszy_krok = False
+            else:
+                lewo += 1
+            liczby[gora][lewo] = liczba
+            liczba += 1
+            ilosc_liczb -= 1
+
+        lewo = start
+        if ilosc_liczb == 0:
+            break
+
+        # w dół
+        while gora != dol:
+            gora += 1
+            liczby[gora][prawo] = liczba
+            liczba += 1
+            ilosc_liczb -= 1
+
+        gora = start + 1
+        if ilosc_liczb == 0:
+            break
+
+        # w lewo
+        while lewo != prawo:
+            prawo -= 1
+            liczby[dol][prawo] = liczba
+            liczba += 1
+            ilosc_liczb -= 1
+
+        prawo = koniec - 1
+        if ilosc_liczb == 0:
+            break
+
+        # w górę
+        while dol != gora:
+            dol -= 1
+            liczby[dol][lewo] = liczba
+            liczba += 1
+            ilosc_liczb -= 1
+
+        koniec -= 1
+        start += 1
+
+    for i in range(n):
+        for j in range(n):
+            print(liczby[i][j], end='\t')
+        print()
 
 
-rysuj_spirale_liczb()
+rysuj_spirale_liczb(7)
 print()
 
 """
