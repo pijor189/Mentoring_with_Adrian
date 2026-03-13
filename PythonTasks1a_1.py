@@ -1,7 +1,10 @@
 """
 Zadania z pliku PythonTasks1a_1
 """
+zadanie = 1
 # 1.    Używając dwóch pętli for napisz funkcję, który wypisze tabliczkę mnożenia od 1 do 10 w formie tabeli.
+print(f"Zadanie {zadanie}")
+zadanie += 1
 for i in range(1, 11):
     for j in range(1, 11):
         print(j * i, end="\t")
@@ -9,6 +12,8 @@ for i in range(1, 11):
 print()
 
 # 2.    Używając dwóch pętli for napisz funkcję, która narysuje prostokąt z gwiazdek. Funkcja na wejściu ma przyjmować szerokość oraz wysokość prostokąta. Przykładowo height=3 i width=5
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_prostokat(height = 3, width = 5):
     for i in range(height):
         for j in range(width):
@@ -19,6 +24,8 @@ print()
 
 # 3.	Używając dwóch pętli for napisz funkcję, która narysuje przekątne w kwadracie o boku n, które są nieparzyste.
 # 3a.   Dodatkowo, możesz obsłużyć liczby parzyste poprzez narysowanie przekątnych w poniższy sposób
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_przekatne_kwadratu(n):
     # n jest nieparzyste i większe lub równe 3
     if n >= 3 and n % 2 != 0:
@@ -81,6 +88,8 @@ rysuj_przekatne_kwadratu(6)
 print()
 
 # 4.	Napisz funkcję, która dla liczby n wypisze piramidę z gwiazdek. Przykładowo dla n=3
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_piramide(n = 3):
     if n > 3:
         if n % 2 != 0:
@@ -102,6 +111,8 @@ rysuj_piramide(8)
 print()
 
 # 5.	Napisz funkcję, która dla przekazanej na wejściu listy list obliczy sumę wszystkich elementów.
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def suma_listy(lista:list) -> int:
     suma = 0
     for elem in lista:
@@ -119,24 +130,36 @@ print()
   # # # #
 # # # # 
 """
+print(f"Zadanie {zadanie}")
+zadanie += 1
+# def szachownica(n = 3):
+#     for i in range(1, n + 1):
+#         if i % 2 == 0:
+#             print(' ', end='')
+#         for j in range(1, n + 2):
+#             if i % 2 != 0:
+#                 print('#', end=' ')
+#             else:
+#                 if j < n + 1:
+#                     print('#', end=' ')
+#                 else:
+#                     print('#', end='')
+#         print()
+
 def szachownica(n = 3):
+    tab = ['#' for x in range(n)]
     for i in range(1, n + 1):
-        if i % 2 == 0:
-            print(' ', end='')
-        for j in range(1, n + 2):
-            if i % 2 != 0:
-                print('#', end=' ')
-            else:
-                if j < n + 1:
-                    print('#', end=' ')
-                else:
-                    print('#', end='')
-        print()
+        if i % 2 != 0:
+            print(" ".join(tab))
+        else:
+            print(" ", " ".join(tab), sep='')
 
 szachownica()
 print()
 
 # 7.	Napisz funkcję, która narysuje bardziej zaawansowaną szachownicę. Użyj w tym celu znaków +, - i |.
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def zaawansowana_szachownica():
     numer_linii = 8
     znak = 65
@@ -178,6 +201,8 @@ print()
 Suma wiersza 1 = 6
 Suma kolumny 1 = 12
 """
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def suma_kolumny_wiersza(macierz, wiersz, kolumna):
     suma_w = 0
     suma_k = 0
@@ -196,6 +221,8 @@ print("Macierz: {}\nSuma wiersza: {}\nSuma kolumny: {}".format(macierz, suma_w, 
 print()
 
 # 9.	Napisz funkcję, która dla liczby n wypisze piramidę z gwiazdek, która ma pusty środek. Przykładowo dla n=3
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_piramida_pusty_srodek(n = 3):
     podstawa = n + n - 1
     odleglosc = n - 1
@@ -219,6 +246,8 @@ rysuj_piramida_pusty_srodek(3)
 print()
 
 # 10.	Napisz funkcję, która dla liczby n wypisze piramidę z gwiazdek do góry nogami. Przykładowo dla n=3
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_piramide_odwrotnie(n = 3):
     odleglosc = 0
     for i in range(n, 0, -2):
@@ -235,6 +264,8 @@ print()
 1 2 1
 1 3 3 1
 """
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_trojkat_Pascala(n):
     for i in range(1, n + 1):
         for j in range(1, i + 1):
@@ -256,6 +287,8 @@ print()
 …
 (6, 6) = 12
 """
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def kostka_kombinacja(n = 2):
     for i in range(1, n + 1):
         for j in range(1, n + 1):
@@ -270,6 +303,8 @@ print()
 8 9 4
 7 6 5
 """
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def rysuj_spirale_liczb(n = 4):
     ilosc_liczb = n * n
     liczby = [[0] * n for x in range(n)]
@@ -353,6 +388,8 @@ print()
 *Hello World*
 ***********
 """
+print(f"Zadanie {zadanie}")
+zadanie += 1
 def otocz_tekst_gwiazdkami(tekst):
     if type(tekst) is list:
         rozmiar = len(tekst)
