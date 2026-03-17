@@ -277,6 +277,13 @@ def rysuj_trojkat_Pascala(n):
                 print(i - 1, end=' ')
         print()
 
+# def rysuj_trojkat_Pascala(n):
+#     for i in range(1, n + 1):
+#         if i <= 2:
+#             print('1' * i, sep=' ')
+#         else:
+#             print('1', f'{i - 1}' * (i - 1), '1', sep=' ')
+
 rysuj_trojkat_Pascala(5)
 print()
 
