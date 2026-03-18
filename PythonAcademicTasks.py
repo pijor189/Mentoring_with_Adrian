@@ -14,7 +14,7 @@ Ponieważ liczby[0] + liczby[2] = 10
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
-liczby = [3, 5, 7, 12]
+liczby = [3, 5, 7, 8, 12, 21, 4]
 suma = 22                   # poszukiwana suma liczb
 
 """for key, value in enumerate(liczby):
@@ -27,7 +27,10 @@ def znajdz_sume_liczb(liczby: list, suma: int) -> None:
     if suma in liczby:
         return print(f"Liczba spod indeksu {liczby.index(suma)} daje nam poszukiwaną sumę: {suma}")
     tmp = sorted(liczby.copy(), reverse=True)
-    for value in tmp:
+    tmp2 = []
+    for key, value in enumerate(tmp):
+        if len(tmp2) > 1:
+            break
         #   sprawdza czy wartość liczby spod tego indeksu jest większa niż poszukiwana suma
         if suma < value:
             #   sprawdzaj kolejną
@@ -46,13 +49,21 @@ def znajdz_sume_liczb(liczby: list, suma: int) -> None:
                 # jeśli kombinacja 3 lub więcej liczb daje poszukiwaną wartość
                 tmp3 = sum(liczby) - suma
                 if tmp3 in tmp:
+                    # suma n - 1 liczb daje nam poszukiwaną wartość
                     tmp.pop(tmp.index(tmp3))
                     tmp2 = [liczby.index(x) for x in tmp]
                     # suma tych liczb daje nam wartość poszukiwaną, zakładając, że jest jedno rozwiązanie, przerwij dalsze poszukiwanie
                     break
                 else:
-                    # działa dla przykładu, kiedy poszukiwana wartość to suma n - 1 liczb z ciągu, w przypadku kiedy są co najmniej 2 liczby w ciągu nie pasujące do tej sumy nie wiem jak to rozegrać
-                    pass
+                    # tutaj chyba trochę mogłem przekombinować, nie jest to zbyt zoptymalizowane, ale działa
+                    for i in range(key + 1, len(tmp)):
+                        for j in range(i + 1, len(tmp)):
+                            if tmp[i] + tmp[j] == tmp1:
+                                tmp2.append(liczby.index(tmp[i]))
+                                tmp2.append(liczby.index(tmp[j]))
+                                break
+                        if len(tmp2) > 1:
+                            break
 
 
     print(f"Liczby spod indeksów {sorted(tmp2)} dają wartość {suma}")
