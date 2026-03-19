@@ -19,6 +19,7 @@ def anagram(text1: str, text2: str) -> bool:
     if sorted(text1.lower()) == sorted(text2.lower()):
         return True
     return False
+
 text1 = "karta"
 text2 = "krata"
 print(f"Czy dwa stringi: {text1} oraz {text2} są anagramami?\n{anagram(text1, text2)}")
@@ -39,7 +40,6 @@ print(tmp)
 # 4.	Napisz dekorator, który wypisze „przed” przed wywołaniem funkcji i „po” po wywołaniu funkcji (musisz umieć dekoratory na swoją rozmowę)
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
-
 
 def dekorator(func):
     def deko():
@@ -87,7 +87,7 @@ def dopisz_do_pliku(plik, a):
     with open(plik, "r") as f:
         tmp = f.read()
         print(f"Zawartość pliku przed zapisem {tmp}")
-        number = int(tmp) + 100
+        number = int(tmp) + a
 
     with open(plik, "w") as f:
         f.write(str(number))
@@ -124,7 +124,7 @@ wyjście: 3
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
-def znajdz_elem(lista: list):
+"""def znajdz_elem(lista: list):
     tmp = set(lista)
     tmp1 = dict()
     for val in tmp:
@@ -132,7 +132,21 @@ def znajdz_elem(lista: list):
 
     for key, val in enumerate(tmp1):
         if tmp1[val] is max(tmp1.values()):
-            return val
+            return val"""
+
+def znajdz_elem(lista: list):
+    # lista z unikalnymi wartościami
+    tmp = list(set(lista))
+    # pierwszy element do porównań, obecnie traktowany jako najczęściej występujący
+    tmp1 = lista.count(tmp[0])
+    # indeks elementu z unikalnej listy, która występuje najczęściej w liście podanej jako parametr funkcji
+    tmp2 = 0
+    for i in range(1, len(tmp)):
+        if tmp1 < lista.count(tmp[i]):
+            tmp1 = lista.count(tmp[i])
+            tmp2 = i
+
+    return tmp[tmp2]
 
 lista = [1, 2, 2, 3, 3, 3, 'a', 'a', 'a', 'a']
 print(f"Najczęściej występujący element z listy {lista} to: {znajdz_elem(lista)}")
