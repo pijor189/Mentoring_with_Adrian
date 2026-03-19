@@ -147,9 +147,17 @@ print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
 def czy_nawiasy_sa_ok(napis: str) -> bool:
-    pary = {'{' : '}', '[': ']', '(': ')'}
-    pass
-
+    pary = {'}' : '{', ']': '[', ')': '('}
+    tab = []
+    for znak in napis.strip():
+        if znak in pary.values():
+            tab.append(znak)
+        elif znak in pary:
+            if tab[-1] == pary[znak]:
+                tab.pop()
+            else:
+                return False
+    return True
 
 nawiasy = "{}()[]"
 print(f"Czy kolejność nawiasów w tym przypadku {nawiasy} jest prawidłowa?: {czy_nawiasy_sa_ok(nawiasy)}")
