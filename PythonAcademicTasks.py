@@ -23,7 +23,7 @@ suma = 22                   # poszukiwana suma liczb
             print(f"Liczby spod indeksów {key} oraz {i} dają wartość {suma}")
             break           # jeśli zakładamy, że ma się znajdować tylko jedno rozwiązanie"""
 
-def znajdz_sume_liczb(liczby: list, suma: int) -> None:
+"""def znajdz_sume_liczb(liczby: list, suma: int) -> None:
     if suma in liczby:
         return print(f"Liczba spod indeksu {liczby.index(suma)} daje nam poszukiwaną sumę: {suma}")
     tmp = sorted(liczby.copy(), reverse=True)
@@ -63,10 +63,29 @@ def znajdz_sume_liczb(liczby: list, suma: int) -> None:
                                 tmp2.append(liczby.index(tmp[j]))
                                 break
                         if len(tmp2) > 1:
-                            break
+                            break"""
+
+def znajdz_sume_liczb(liczby: list, suma: int) -> None:
+    if len(liczby) == 0:
+        return print("Została przekazana pusta tablica, nie ma jak znaleźć poszukiwanej sumy")
+    if suma == 0:
+        return print("Suma nie może być 0")
+    if suma in liczby:
+        return print(f"Liczba spod indeksu {liczby.index(suma)} daje nam poszukiwaną sumę: {suma}")
+    # poszukiwanie jednej nie pasującej liczby z ciągu do sumy
+    reszta = sum(liczby) - suma
+    # dla n - 1
+    if reszta in liczby:
+        tmp = [liczby.index(x) for x in liczby if x != reszta]
+        return print(f"Liczby spod indeksów {tmp} dają wartość {suma}")
+    # wykluczamy liczby większe od poszukiwanej sumy
+    tmp = [x for x in liczby if x < suma]
 
 
-    print(f"Liczby spod indeksów {sorted(tmp2)} dają wartość {suma}")
+
+
+
+    print(f"Liczby spod indeksów {0} dają wartość {suma}")
 
 
 znajdz_sume_liczb(liczby, suma)
@@ -184,12 +203,17 @@ zadanie += 1
         napis += " "
     print(napis)"""
 
-def zadanie_fizz_bizz(n: int) -> None:
+"""def zadanie_fizz_bizz(n: int) -> None:
     napis = ""
     for val in range(1, max(n + 1, 1)):
         napis += "Fizz" * (val % 3 == 0) + "Buzz" * (val % 5 == 0) + str(val) * (val % 3 != 0 and val % 5 != 0) + " "
-    print(napis)
+    print(napis)"""
 
+def zadanie_fizz_bizz(n: int) -> None:
+    napis = ""
+    for val in range(1, max(n + 1, 1)):
+        napis += ("Fizz" * (val % 3 == 0) + "Buzz" * (val % 5 == 0) or str(val)) + " "
+    print(napis)
 
 n = 15
 # print(f"Lista FizzBuzz dla wartości {n} wygląda następująco: {zadanie_fizz_bizz(n)}")
