@@ -196,7 +196,7 @@ def dodaj_stringi(napis1: str, napis2: str) -> str:
     reszta_dodawania = 0
     tab = []
     for i in range(size_of_loop, 0, -1):
-        # zczytujemy pojedyńczo cyfry od końca i dodajemy do siebie jak w dodawaniu pod kreską
+        # zczytujemy pojedynczo cyfry od końca i dodajemy do siebie jak w dodawaniu pod kreską
         # żeby je poprawnie zczytać, zamieniamy je na kod ASCII i odejmujemy wartość 0 w ASCII, by odzwierciedlić liczbę
         tmp1 = ord(napis1[len1]) - ord('0') if len1 >= 0 else 0
         tmp2 = ord(napis2[len2]) - ord('0') if len2 >= 0 else 0
@@ -224,7 +224,7 @@ print(f"{napis1} + {napis2} = {dodaj_stringi(napis1, napis2)}")
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
-def sortuj_krotki_po_2_elemencie(a) -> tuple:
+def sortuj_krotki_po_2_elemencie(a):
     return sorted(a, key=lambda x: x[1])
 
 a = [(1,3),(2,1),(3,2)]
