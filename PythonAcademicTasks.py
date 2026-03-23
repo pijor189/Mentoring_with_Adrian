@@ -81,10 +81,6 @@ def znajdz_sume_liczb(liczby: list, suma: int) -> None:
     # wykluczamy liczby większe od poszukiwanej sumy
     tmp = [x for x in liczby if x < suma]
 
-
-
-
-
     print(f"Liczby spod indeksów {0} dają wartość {suma}")
 
 

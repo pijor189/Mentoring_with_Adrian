@@ -1,6 +1,7 @@
 """
 Zadania z pliku PythonTasks - Zadania akademickie 2
 """
+import time
 
 zadanie = 1
 # 1.	Napisz funkcję, która odwróci podany string bez użycia [::-1]
@@ -15,10 +16,19 @@ print(f"Text: {"string"} reversed text: {reverse_string("string")}")
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
+"""def is_anagram(text1: str, text2: str) -> bool:
+    return sorted(text1.lower()) == sorted(text2.lower())"""
+
+# alternative solution
 def is_anagram(text1: str, text2: str) -> bool:
-    if sorted(text1.lower()) == sorted(text2.lower()):
-        return True
-    return False
+    if len(text1.strip()) != len(text2.strip()):
+        return False
+    dict1 = dict()
+    dict2 = dict()
+    for i in range(len(text1)):
+        dict1[text1[i]] = dict1.get(text1[i], 0) + 1
+        dict2[text2[i]] = dict2.get(text2[i], 0) + 1
+    return dict1 == dict2
 
 text1 = "karta"
 text2 = "krata"
@@ -58,16 +68,29 @@ show()
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
-def count_letters(text: str) -> int:
+"""def count_letters(text: str) -> int:
     counter = 0
     for letter in text:
         if letter.isalpha():
             counter += 1
-
     return counter
+    
+text = 'abcdefgh567--!  '
+print(f"There are {count_letters(text)} letters in the {text}")"""
+
+def analyze_text(text: str):
+    dictionary = {}
+    for letter in text:
+        if letter.isalpha():
+            dictionary['letters'] = dictionary.get('letters', 0) + 1
+        elif letter.isdigit():
+            dictionary['numbers'] = dictionary.get('numbers', 0) + 1
+        else:
+            dictionary['others'] = dictionary.get('others', 0) + 1
+    return dictionary
 
 text = 'abcdefgh567--!  '
-print(f"There are {count_letters(text)} letters in the {text}")
+print(f"In this text there are: {analyze_text(text)}")
 
 """
 6.	Napisz funkcję, która (użyj context managera):
@@ -81,7 +104,7 @@ zadanie += 1
 
 import os
 
-def append_to_file(file, content):
+"""def append_to_file(file, content):
     if not os.path.isfile(file):
         return print(f"Error while reading, check if you provided the correct file")
     with open(file, "r") as f:
@@ -93,7 +116,27 @@ def append_to_file(file, content):
         f.write(str(number))
 
     with open(file, "r") as f:
+        print(f"File contents after saving {f.read()}")"""
+
+def append_to_file(file, content):
+    if not os.path.isfile(file):
+        return print(f"Error while reading, check if you provided the correct file")
+    with open(file, "r+") as f:
+        # read number before incrementing
+        tmp = f.read()
+        print(f"File contents before saving {tmp}")
+        # increment number
+        number = int(tmp) + content
+        # go back to start of file
+        f.seek(0)
+        # clear all contents of a file
+        f.truncate()
+        # write incremented number
+        f.write(str(number))
+        # go back to start of file
+        f.seek(0)
         print(f"File contents after saving {f.read()}")
+
 
 append_to_file("plik_zad_6", 100)
 
@@ -104,7 +147,7 @@ wyjście: 1, 1, 2, 3, 5
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
-def generate_Fib_seq(n: int) -> list:
+"""def generate_Fib_seq(n: int) -> list:
     tab = []
     for i in range(n):
         if i < 2:
@@ -114,7 +157,37 @@ def generate_Fib_seq(n: int) -> list:
     return tab
 
 n = 10
-print(f"Fibonacci sequence for the given N ={n} -> {generate_Fib_seq(n)}")
+print(f"Fibonacci sequence for the given N ={n} -> {generate_Fib_seq(n)}")"""
+
+class Fib_seq:
+    def __init__(self, n):
+        self.value = 1
+        self.counter = 1
+        self.previous = 1
+        self.n = n
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.counter > self.n:
+            raise StopIteration
+        elif self.counter > 2:
+            self.value += self.previous
+            self.previous = self.value
+            self.counter += 1
+            return self.value
+        else:
+            self.counter += 1
+            return self.value
+
+try:
+    n = 5
+    seq_Fib = Fib_seq(n)
+    for i in range(n + 2):
+        print(next(seq_Fib), end=', ')
+except StopIteration:
+    print(f"The Fibonacci sequence was called more times than it was defined.")
 
 """
 8.	Napisz funkcję, która dostając listę, znajdzie i zwróci najczęściej występujący element. 
@@ -145,7 +218,6 @@ def find_elem(collection: list):
         if tmp1 < collection.count(tmp[i]):
             tmp1 = collection.count(tmp[i])
             tmp2 = i
-
     return tmp[tmp2]
 
 collection = [1, 2, 2, 3, 3, 3, 'a', 'a', 'a', 'a']
@@ -217,6 +289,18 @@ string1 = "140"
 string2 = "80"
 print(f"{string1} + {string2} = {add_strings(string1, string2)}")
 
+# an additional decorator to check the sorting performance
+
+def log_function(func):
+    def timer(*args, **kwargs):
+        start = time.perf_counter()
+        r = func(*args, **kwargs)
+        stop = time.perf_counter()
+        print(f"Execution time of this sorting operation: {stop - start:.6f}")
+        return r
+    return timer
+
+
 """
 11.	Napisz funkcje sortującą krotki po drugim elemencie.
 [(1,3),(2,1),(3,2)] -> [(2,1),(3,2),(1,3)]
@@ -224,8 +308,92 @@ print(f"{string1} + {string2} = {add_strings(string1, string2)}")
 print(f"\nZadanie {zadanie}\n")
 zadanie += 1
 
+@log_function
 def sort_tuples_on_sec_elem(a):
     return sorted(a, key=lambda x: x[1])
 
 a = [(1,3),(2,1),(3,2)]
 print(f"Tuples before sorting: {a}\nTuples after sorting on the second element: {sort_tuples_on_sec_elem(a)}")
+
+# 12. Napisz funkcję, która posortuje listę - sortowanie bąbelkowe
+print(f"\nZadanie {zadanie}\n")
+zadanie += 1
+
+collection = [5,2,8,10,99,1,22,11,6,3,9,18,11]
+
+@log_function
+def bubble_sort(array: list) -> list:
+    # number of swaps
+    counter = 0
+    for i in range(len(array)):
+        # values were not changed
+        swap = False
+        for x in range(len(array) - i - 1):
+            if array[x] > array[x + 1]:
+                # values are changed
+                array[x], array[x + 1] = array[x + 1], array[x]
+                counter += 1
+                swap = True
+        if not swap:
+            # if values were not changed in this iteration, bubble sorting is complete
+            break
+    print(f"The list is sorted. Number of swaps: {counter}")
+    return array
+
+print(f"List before bubble sort: {collection.copy()}\nList after bubble sort: {bubble_sort(collection.copy())}")
+print()
+
+@log_function
+def sorted_function(array: list) -> list:
+    return sorted(array)
+
+print(f"List before sorted: {collection.copy()}\nList after sorted: {sorted_function(collection.copy())}")
+print()
+
+
+# wg ChatGpt wyszło z tego coś bardziej zbliżonego do selection sort, niż insertion sort
+"""
+@log_function
+def insertion_sort(array: list) -> list:
+    # number of swaps
+    counter = 0
+    for i in range(len(array) - 1):
+        for j in range(i + 1, len(array)):
+            if array[i] > array[j]:
+                # values are changed
+                array[i], array[j] = array[j], array[i]
+                counter += 1
+    print(f"The list is sorted. Number of swaps: {counter}")
+    return array"""
+
+# zlożoność: 0(n**2)
+# pamięć 0(1)
+# bardzo dobra do sortowania małych list
+@log_function
+def insertion_sort(array: list) -> list:
+    for i in range(1, len(array)):
+        tmp = array[i]
+        j = i - 1
+        while j >= 0 and array[j] > tmp:
+            array[j + 1] = array[j]
+            j -= 1
+        array[j + 1] = tmp
+    return array
+
+
+print(f"List before insertion sort: {collection.copy()}\nList after insertion sort: {insertion_sort(collection.copy())}")
+
+# złożoność 0(n log n) / 0(n**2)
+# pamięć 0(n)   dosyć sporo przez tworzenie coraz to nowych tablic
+# dobra do małych danych, elegancka, krótka
+@log_function
+def quick_sort(array: list) -> list:
+    if len(array) <= 1:
+        return array
+    pivot = array[0]
+    left = [x for x in array[1:] if x < pivot]
+    right = [x for x in array[1:] if x >= pivot]
+    return quick_sort(left) + [pivot] + quick_sort(right)
+
+print(f"List before quick sort: {collection.copy()}\nList after quick sort: {quick_sort(collection.copy())}")
+

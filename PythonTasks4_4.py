@@ -151,9 +151,6 @@ class Shape:
 
 
 class Circle(Shape):
-    def __init__(self, a):
-        super().__init__(a)
-
     def __str__(self):
         return f"Koło o promieniu {self.a}"
 
@@ -162,9 +159,6 @@ class Circle(Shape):
 
 
 class Square(Shape):
-    def __init__(self, a):
-        super().__init__(a)
-
     def __str__(self):
         return f"Kwadrat o bokach {self.a}"
 
@@ -203,24 +197,25 @@ class Human:
     def __str__(self):
         return f"{self.eye_color}"
 
-class Mother(Human):
-    def __init__(self, eye_color):
-        super().__init__(eye_color)
-
     def show(self):
-        print("Zadanie 21, wywołanie metody z klasy rodzica")
+        print(f"Ten człowiek ma {self.eye_color} kolor oczu")
+
+class Mother(Human):
+    def show(self):
+        print(f"Mama ma {self.eye_color} kolor oczu")
 
 class Father(Human):
-    def __init__(self, eye_color):
-        super().__init__(eye_color)
+    def show(self):
+        print(f"Tata ma {self.eye_color} kolor oczu")
 
-class Child(Mother):
-    def __init__(self, eye_color):
-        super().__init__(eye_color)
+class Child(Mother, Father):
+    def show(self):
+        print(f"Dziecko ma {self.eye_color} kolor oczu")
 
 mother1 = Mother("niebieskie")
 father1 = Father("brązowe")
-child1 = Child(mother1)
+# nie wiem jak inaczej to zrobić tutaj, żeby nie musieć podawać dziecku tego eye_color tylko żeby dziedziczyło
+child1 = Child(mother1.eye_color)
 print(f"Kolor oczu matki: {mother1}, ojca: {father1}, dziecko odziedziczyło po matce i ma kolor: {child1}")
 
 # 11)	Utwórz klasę PersonChild(), która będzie dziedziczyć po Person z zadania 7). Przeciąż metodę magiczną __eq__() tak aby sprawdzała tylko i wyłącznie imię danej osoby.
@@ -233,10 +228,6 @@ class PersonChild(Person):
 
     def __eq__(self, other):
         return self.name == other.name
-
-    #   tutaj się zastanawiam, czy to MRO (method resolution order) sprawia, że jeśli w taki sposób przeciąże __str__ to sprawi, że będzie to lepiej zoptymalizowane, czy powinienem coś takiego tutaj zrobić i przeciążać __str__?
-    def __str__(self):
-        return super().__str__()
 
 personChild1 = PersonChild("Krzysztof", "Pijor")
 personChild2 = PersonChild("Tomasz", "Pijor")
