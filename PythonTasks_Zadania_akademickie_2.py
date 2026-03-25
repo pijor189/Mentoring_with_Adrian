@@ -181,13 +181,10 @@ class Fib_seq:
             self.counter += 1
             return self.value
 
-try:
-    n = 5
-    seq_Fib = Fib_seq(n)
-    for i in range(n + 2):
-        print(next(seq_Fib), end=', ')
-except StopIteration:
-    print(f"The Fibonacci sequence was called more times than it was defined.")
+n = 5
+seq_Fib = Fib_seq(n)
+for i in Fib_seq(n):
+    print(i, end=' ')
 
 """
 8.	Napisz funkcję, która dostając listę, znajdzie i zwróci najczęściej występujący element. 
