@@ -4,8 +4,6 @@ Zadania z pliku Python Tasks - wyjątki i algorytmy 1
 from math import expm1
 from sys import exception
 
-from numpy.matlib import empty
-
 exercise = 1
 
 # 1)	Napisz obsługę przechwytywania wyjątku dzielenia przez zero w bloku try-except dla operacji 1/0.
@@ -27,8 +25,10 @@ try:
     a = 1
     b = 0
     c = a / b
-except (ZeroDivisionError, ArithmeticError, Exception) as e:
+except ZeroDivisionError as e:
     print(f"Attempt to divide by 0, an error {e} was returned")
+except ArithmeticError as e:
+    print(f"ArithmeticError was returner: {e}")
 
 # 3)	Sprawdź jakie znaczenie ma kolejność w zadaniu 2, napisz jaka kolejność jest poprawna.
 print(f"Exercise {exercise}")
@@ -40,8 +40,10 @@ try:
     c = a // b
 except SyntaxError as e:
     print(f"Invalid syntax {e}")
-except (ArithmeticError, Exception, ZeroDivisionError) as e:
+except ZeroDivisionError as e:
     print(f"Attempt to divide by 0, an error {e} was returned")
+except ArithmeticError as e:
+    print(f"ArithmeticError was returner: {e}")
 # patrząc na to, że wpisałem ZeroDivisionError jako ostatnie w tym przypadku, to i tak zwróciło ten błąd
 
 # 4)	Rozszerz powyższe rozwiązanie o blok else, w którym rzucisz wyjątek (raise()) PermissionError, że żaden wyjątek nie został rzucony.
@@ -54,8 +56,10 @@ try:
     c = a / b
 except SyntaxError as e:
     print(f"Invalid syntax {e}")
-except (ArithmeticError, Exception, ZeroDivisionError) as e:
+except ZeroDivisionError as e:
     print(f"Attempt to divide by 0, an error {e} was returned")
+except ArithmeticError as e:
+    print(f"ArithmeticError was returner: {e}")
 except PermissionError as e:
     print(f"No exception was thrown: {e}")
 else:
@@ -74,8 +78,10 @@ try:
         c = a / b
     except SyntaxError as e:
         print(f"Invalid syntax {e}")
-    except (ArithmeticError, Exception, ZeroDivisionError) as e:
+    except ZeroDivisionError as e:
         print(f"Attempt to divide by 0, an error {e} was returned")
+    except ArithmeticError as e:
+        print(f"ArithmeticError was returner: {e}")
     except PermissionError as e:
         print(f"No exception was thrown: {e}")
     else:
@@ -99,14 +105,20 @@ try:
     c = a // b
 except SyntaxError as e:
     print(f"Invalid syntax {e}")
-except (ArithmeticError, Exception, ZeroDivisionError) as e:
+except ZeroDivisionError as e:
     print(f"Attempt to divide by 0, an error {e} was returned")
     print(f"{e.__class__.__name__}")
     print(f"{e.args}")
     print(f"{type(e)}")
     print(f"{str(e)}")
     # traceback.print_exc()
-
+except ArithmeticError as e:
+    print(f"ArithmeticError, an error {e} was returned")
+    print(f"{e.__class__.__name__}")
+    print(f"{e.args}")
+    print(f"{type(e)}")
+    print(f"{str(e)}")
+    # traceback.print_exc()
 
 # 7)	Napisz własną klasę wyjątków PythonTasksError (Jest to klasa, która dziedziczy po Exception) po której będą dziedziczyć pozostałe wyjątki w zadaniach.
 print(f"Exercise {exercise}")
@@ -136,17 +148,36 @@ class WednesdayError(PythonTasksError):
         self.comunicate = comunicate
 
     def __str__(self):
-        return f"{self.comunicate}"
+        return f"{self.__class__.__name__}"
+
 
 def is_it_wednesday_my_dudes():
     raise WednesdayError("it's wednesday error dude")
 
 try:
+    raise WednesdayError("bo tak")
     is_it_wednesday_my_dudes()
 except WednesdayError as e:
-    print(f"Error was raised: {e}")
+    print(f"Error was raised: {e.comunicate}")
 
+class Suma:
+    def __init__(self):
+        self.a = "Imie"
+        self.b = "Nazwisko"
 
+    def __str__(self):
+        return f"{self.a + ' ' + self.b}"
+
+s = Suma()
+print(s)
+
+a = 1
+b = 1
+print(a is b)
+print(id(a))
+print(id(b))
+print(frozenset([1,2,3]))
+print(bytearray([1,2,3]))
 """
 9)	Napisz klasę Kalkulator z metodami:
 •	sum(a, b), która rzuca wyjątek SmallScreenError, jeśli suma jest większa niż milion i udajemy, że nie jest w stanie jej wyświetlić

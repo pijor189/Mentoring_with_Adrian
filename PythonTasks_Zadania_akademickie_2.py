@@ -394,3 +394,33 @@ def quick_sort(array: list) -> list:
 
 print(f"List before quick sort: {collection.copy()}\nList after quick sort: {quick_sort(collection.copy())}")
 
+
+# gnome sort
+# dobry tylko dla malych zbiorow, z angielskiego stupid sort, glupie, dziala jak krasnal ogrodowy ktory przestawia doniczki do tylu, spora zloznosc, bardziej edukacyjnie
+# time 0(n**2)
+# space 0(1)
+@log_function
+def gnome_sort(data: list[int]) -> list[int]:
+    i = 1
+    while i < len(data):
+        if i == 0 or data[i] >= data[i - 1]:
+            i += 1
+        else:
+            data[i], data[i - 1] = data[i - 1], data[i]
+            i -= 1
+
+    return data
+print(f"Collection before gnom sort: {collection}\nCollection after gnome sort: {gnome_sort(collection)}")
+
+
+"""
+Funkcja ma zwrócić 
+- dla val < 0                       ->      0
+- dla val >= 0 and val <= 100       ->      val
+- dla val > 100                     ->      100
+"""
+def give_value(value) -> int:
+    if type(value) is not int:
+        value = int(value)
+    return value if value in range(0,100) else 0 if value < 0 else 100
+
