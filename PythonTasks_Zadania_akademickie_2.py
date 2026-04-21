@@ -419,8 +419,11 @@ Funkcja ma zwrócić
 - dla val >= 0 and val <= 100       ->      val
 - dla val > 100                     ->      100
 """
-def give_value(value) -> int:
-    if type(value) is not int:
-        value = int(value)
-    return value if value in range(0,100) else 0 if value < 0 else 100
 
+"""
+def give_value(value) -> int:
+    return int(value) if int(value) in range(0,100) else 0 if int(value) < 0 else 100
+"""
+
+def give_value(value: int) -> int:
+    return min(max(0, int(value)), 100)
