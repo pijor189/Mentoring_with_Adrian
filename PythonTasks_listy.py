@@ -152,78 +152,117 @@ exercise += 1
 class DoubleLinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None
 
     def append(self, value):
         elem = Element(value)
         if not self.head:
             self.head = elem
+            self.tail = elem
+            elem.next = elem
+            elem.prev = elem
             return
-        current_elem = self.head
-        while current_elem.next:
-            current_elem = current_elem.next
-        current_elem.next = elem
-        elem.prev = current_elem
+        elem.prev = self.tail
+        elem.next = self.head
+        self.tail.next = elem
+        self.head.prev = elem
+        self.tail = elem
 
     def find(self, value):
+        if not self.head:
+            return None
+
         current_elem = self.head
-        while current_elem:
+        while True:
             if current_elem.value == value:
                 return current_elem
             current_elem = current_elem.next
+            if current_elem == self.head:
+                break
         return None
 
     def delete(self, value):
         if not self.head:
             raise EmptyListError("Pusta lista")
+
         current_elem = self.head
-        while current_elem:
+        while True:
             if current_elem.value == value:
-                if current_elem.prev:
-                    current_elem.prev.next = current_elem.next
-                else:
+                if self.head == self.tail:
+                    self.head = None
+                    self.tail = None
+                    return
+
+                current_elem.prev.next = current_elem.next
+                current_elem.next.prev = current_elem.prev
+
+                if current_elem == self.head:
                     self.head = current_elem.next
-                if current_elem.next:
-                    current_elem.next.prev = current_elem.prev
+                if current_elem == self.tail:
+                    self.tail = current_elem.prev
                 return
+
             current_elem = current_elem.next
-        else:
-            raise ValueNotFoundError(f"Nie ma takiej wartości: {value}")
+            if current_elem == self.head:
+                break
+
+        raise ValueNotFoundError(f"Value not found: {value}")
 
     def __len__(self):
+        if not self.head:
+            return 0
+
         count = 0
         current_elem = self.head
-        while current_elem:
+        while True:
             count += 1
             current_elem = current_elem.next
+            if current_elem == self.head:
+                break
         return count
 
     def __iter__(self):
         self.iter_elem = self.head
+        self.started = False
         return self
 
     def __next__(self):
-        if not self.iter_elem:
+        if not self.head:
             raise StopIteration
+
+        if self.started and self.iter_elem == self.head:
+            raise StopIteration
+
+        self.started = True
         value = self.iter_elem.value
         self.iter_elem = self.iter_elem.next
         return value
 
     def __str__(self):
+        if not self.head:
+            return "Empty list"
+
         values = []
         current_elem = self.head
-        while current_elem:
+        while True:
             values.append(str(current_elem.value))
             current_elem = current_elem.next
+            if current_elem == self.head:
+                break
         return " -> ".join(values)
 
     def reverse(self):
-        prev_elem = None
-        current_elem = self.head
-        while current_elem:
-            current_elem.prev, current_elem.next = current_elem.next, current_elem.prev
-            prev_elem = current_elem
-            current_elem = current_elem.prev
-        self.head = prev_elem
+        if not self.head or self.head == self.tail:
+            return
+
+        current = self.head
+        while True:
+            current.next, current.prev = current.prev, current.next
+            current = current.prev
+            if current == self.head:
+                break
+        self.head, self.tail = self.tail, self.head
+
 
 try:
     double_linked_list = DoubleLinkedList()
@@ -232,45 +271,21 @@ try:
     double_linked_list.append("A")
     double_linked_list.append("B")
     double_linked_list.append("C")
-    node = double_linked_list.head
-
-    while node:
-        print(node.value, end=" -> ")
-        node = node.next
-    print()
-    # sprawdzenie wstecz
-    node = double_linked_list.head
-    while node.next:
-        node = node.next
-    while node:
-        print(node.value, end=" -> ")
-        node = node.prev
-    print()
+    print(double_linked_list)
 
     double_linked_list.append("D")
     double_linked_list.delete("B")
     double_linked_list.append("E")
+    print(double_linked_list)
 
     double_linked_list.reverse()
-    while node:
-        print(node.value, end=" -> ")
-        node = node.next
-    print()
-    # sprawdzenie wstecz
-    node = double_linked_list.head
-    while node.next:
-        node = node.next
-    while node:
-        print(node.value, end=" -> ")
-        node = node.prev
-    print()
+    print(double_linked_list)
 
 except EmptyListError as e:
     print(f"Próba usunięcia elementu z pustej listy: {e}")
 except ValueNotFoundError as e:
     print(f"Próba usunięcia nieistniejącego elementu: {e}")
 
-# 16)	Zadanie z gwiazdką*. Dodaj atrybuty head i tail, które będą ustawiane jako zmienne bool. Podepnij prev pierwszego elementu tak, aby wskazywał na ostatni element listy, a next ostatniego na pierwszy. W ten sposób uzyskasz listę zapętloną dwukierunkową.
+# 16)	Zadanie z gwiazdką*. Dodaj atrybuty head i tail, które będą ustawiane na element początku i końca listy. Podepnij prev pierwszego elementu tak, aby wskazywał na ostatni element listy, a next ostatniego na pierwszy. W ten sposób uzyskasz listę zapętloną dwukierunkową.
 print(f"Exercise {exercise}")
 exercise += 1
-# nie do konca rozumiem jednak czemu jako zmienne bool, czy to maja byc w takim razie atrybuty elementu? 
