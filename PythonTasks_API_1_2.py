@@ -18,19 +18,19 @@ import time
 
 import requests
 
-# data = []
-# count = int(1000 / 50)
-# url = 'https://api.dane.gov.pl/1.4/resources/1187350/data'
-#
-# for key in range(1, count + 1):
-#     response = requests.get(url ,params={"page": 1, "per_page": 50})
-#     content_type = response.headers.get("Content-Type", "")
-#     if "application/vnd.api+json" in content_type:
-#         payload = response.json()
-#         data += payload.get("data", [])
-#
-# for item in data:
-#     print(item['attributes'])
+data = []
+count = int(1000 / 50)
+url = 'https://api.dane.gov.pl/1.4/resources/1187350/data'
+
+for key in range(1, count + 1):
+    response = requests.get(url ,params={"page": 1, "per_page": 50})
+    content_type = response.headers.get("Content-Type", "")
+    if "application/vnd.api+json" in content_type:
+        payload = response.json()
+        data += payload.get("data", [])
+
+for item in data:
+    print(item['attributes'])
 
 """
 15.	Korzystając z samego modułu request pobierz najczęściej oraz najrzadziej występujące męskie i damskie imię.
@@ -41,93 +41,47 @@ data = []
 page = 1
 url = 'https://api.dane.gov.pl/1.4/resources/1187350/data'
 
-start_time = time.time()
 
-while True:
-    params = {
-        "page": page,
-        "per_page": 50
-    }
+def get_api_result(url: str, params: dict) -> list | str:
     response = requests.get(url, params=params)
+    content_type = response.headers.get("Content-Type", "")
+
+    if not "application/vnd.api+json" in content_type:
+        return f"Another content type as expected: {content_type}"
+
     payload = response.json()
-    records = payload.get("data")
 
-    if not records:
-        break
+    try:
+        data = payload["data"]
+    except KeyError as e:
+        return f"Invalid params: {e}"
 
-    data += records
-    page += 1
+    if not data:
+        return "Not data"
 
-print(len(data))
+    result = []
 
-man_names = {}
-woman_names = {}
+    for d in data:
+        for key, val in d.items():
+            if key == "attributes":
+                person = []
+                for i in range(1, 8):
+                    value = val[f"col{i}"]['val']
+                    person.append(value if isinstance(value, str) else int(value))
+                if len(data) == 1:
+                    result = person
+                else:
+                    result.append(person)
 
-child_name = 'DAMIAN'
-specific_name_dict = {child_name: {}}
+    return result
 
-for item in data:
-    name = item['attributes']['col5']['val']
-    gender = item['attributes']['col6']['val']
-    count = item['attributes']['col7']['val']
-    state = item['attributes']['col2']['val']
-    if gender == 'KOBIETA':
-        woman_names[name] = woman_names.get(name, 0) + int(count)
-    else:
-        man_names[name] = man_names.get(name, 0) + int(count)
 
-    if name == child_name:
-        specific_name_dict[child_name][state] = specific_name_dict[child_name].get(state, 0) + int(count)
-
-print(specific_name_dict)
-
-print(woman_names)
-
-min_woman_count = len(woman_names)
-min_woman_name = ''
-max_woman_count = 0
-max_woman_name = ''
-
-for key, val in woman_names.items():
-    if val < min_woman_count:
-        min_woman_count = val
-        min_woman_name = key
-    if val > max_woman_count:
-        max_woman_count = val
-        max_woman_name = key
-
-print(min_woman_name, int(min_woman_count))
-print(max_woman_name, int(max_woman_count))
-
-min_man_count = len(man_names)
-min_man_name = ''
-max_man_count = 0
-max_man_name = ''
-
-for key, val in man_names.items():
-    if val < min_man_count:
-        min_man_count = val
-        min_man_name = key
-    if val > max_man_count:
-        max_man_count = val
-        max_man_name = key
-
-print(min_man_name, int(min_man_count))
-print(max_man_name, int(max_man_count))
-
-count = 0
-max_state = {'state': None, 'count': None}
-
-for key, val in specific_name_dict[child_name].items():
-    if val > count:
-        count = val
-        max_state['state'] = key
-        max_state['count'] = val
-
-print(child_name, max_state)
-
-end_time = time.time()
-print(f"Execution time: {end_time - start_time}")
+print(get_api_result(url, {"page": 1, "per_page": 2}))
+print(get_api_result(url, {"page": 1, "per_page": 1, "q": "col6:kobieta", "sort": "col7"}))
+print(get_api_result(url, {"page": 1, "per_page": 1, "q": "col6:kobieta", "sort": "-col7"}))
+print(get_api_result(url, {"page": 1, "per_page": 1, "q": "col6:mężczyzna", "sort": "col7"}))
+print(get_api_result(url, {"page": 1, "per_page": 1, "q": "col6:mężczyzna", "sort": "-col7"}))
+print(get_api_result(url, {"page": 1, "per_page": 1, "q": "col5:Damian", "sort": "-col7"}))
 
 """
 16.	Przefiltruj dane dla imienia Damian. W jakim Województwie nadano to imię najczęściej oraz w jakiej ilości?

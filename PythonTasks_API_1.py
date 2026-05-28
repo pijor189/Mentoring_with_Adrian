@@ -119,7 +119,7 @@ def get_exchange_rates(currency: str, date_from: str, date_to: str = None) -> di
             if actual_year == df.year:
                 end_year_date = f"{actual_year + 1}-01-01"
                 data = requests.get(f'https://api.nbp.pl/api/exchangerates/rates/{table}/{code}/{df}/\
-{end_year_date}/')
+                    {end_year_date}/')
                 data = data.json()
 
                 for val in data['rates']:
@@ -127,7 +127,7 @@ def get_exchange_rates(currency: str, date_from: str, date_to: str = None) -> di
             elif actual_year == dt.year:
                 last_year_date = f"{dt.year}-01-01"
                 data = requests.get(f'https://api.nbp.pl/api/exchangerates/rates/{table}/{code}/\
-{last_year_date}/{dt}/')
+                    {last_year_date}/{dt}/')
                 data = data.json()
 
                 for val in data['rates']:
